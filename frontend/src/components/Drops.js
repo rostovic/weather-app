@@ -8,7 +8,7 @@ const Drops = ({ type }) => {
   if (type === "Rain" || type === "Drizzle") {
     width = "0.1rem";
     height = "0.5rem";
-  } else {
+  } else if (type === "Snow") {
     width = "0.3rem";
     height = "0.3rem";
   }

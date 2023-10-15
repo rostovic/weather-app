@@ -1,0 +1,11 @@
+.test {
+  display: flex;
+  align-items: center;
+}
+
+span {
+  font-weight: 300;
+  font-size: 1rem;
+  color: white;
+  opacity: 0.75;
+}

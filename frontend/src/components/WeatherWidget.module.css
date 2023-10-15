@@ -1,0 +1,25 @@
+.widgetDiv {
+  position: relative;
+  height: 10rem;
+  width: 20rem;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.5);
+  background: linear-gradient(180deg, #696969, lightgrey);
+  padding: 0.5rem;
+}
+
+.weatherImage {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.windStyle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 0.5rem;
+}

@@ -1,0 +1,20 @@
+.raindrops {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: absolute;
+  animation: fall 1s linear;
+  top: 0;
+  left: 0;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(5rem);
+    opacity: 0;
+  }
+}

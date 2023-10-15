@@ -1,0 +1,14 @@
+.mainLayoutDiv {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.widgetDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20rem;
+  width: 100%;
+  background-color: lightgrey;
+}

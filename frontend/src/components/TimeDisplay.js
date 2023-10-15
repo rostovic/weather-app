@@ -8,7 +8,9 @@ const TimeDisplay = () => {
       const hours = time.getHours();
       const minutes = time.getMinutes();
       const seconds = time.getSeconds();
-      setTimeString(`${hours}:${minutes}:${seconds}`);
+      setTimeString(
+        `${hours}:${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`
+      );
     }, 1000);
 
     return () => clearInterval(interval);

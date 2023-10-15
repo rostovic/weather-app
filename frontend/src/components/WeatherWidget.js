@@ -1,7 +1,7 @@
 import { getWeatherData } from "../functions/api";
 import WeatherAttribute from "./WeatherAttribute";
 import classes from "./WeatherWidget.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import WindAttribute from "./WindAttribute";
 import Drops from "./Drops";
 import TimeDisplay from "./TimeDisplay";
@@ -11,6 +11,48 @@ const shouldRenderDrops = ["Rain", "Drizzle", "Snow"];
 const WeatherWidget = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setOffset({
+      x: e.clientX - position.x,
+      y: e.clientY - position.y,
+    });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e) => {
+    if (isDragging) {
+      const { clientX: cx, clientY: cy } = e;
+      let newX = cx - offset.x;
+      let newY = cy - offset.y;
+      console.log(newX, newY);
+
+      if (newX < 0) {
+        newX = 0;
+      }
+      if (newY < 0) {
+        newY = 0;
+      }
+      if (newX + 300 > window.innerWidth) {
+        newX = window.innerWidth - 300;
+      }
+
+      if (newY + 150 > window.innerHeight) {
+        newY = window.innerHeight - 150;
+      }
+      setPosition({
+        x: newX,
+        y: newY,
+      });
+    }
+  };
 
   useEffect(() => {
     const handleGeolocation = async (position) => {
@@ -41,7 +83,7 @@ const WeatherWidget = () => {
     }
   };
 
-  const renderInfo = () => {
+  const renderInfo = useMemo(() => {
     if (!weatherData) {
       return;
     }
@@ -107,7 +149,7 @@ const WeatherWidget = () => {
         />
       </div>
     );
-  };
+  }, [weatherData]);
 
   let gradientStyle = "";
 
@@ -154,8 +196,19 @@ const WeatherWidget = () => {
   }
 
   return (
-    <div className={classes.mainDiv} style={{ background: gradientStyle }}>
-      {renderInfo()}
+    <div
+      className={classes.mainDiv}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseMove={handleMouseMove}
+      style={{
+        position: "absolute",
+        left: position.x + "px",
+        top: position.y + "px",
+        background: gradientStyle,
+      }}
+    >
+      {renderInfo}
     </div>
   );
 };

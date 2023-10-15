@@ -1,4 +1,4 @@
-.widgetDiv {
+.mainDiv {
   position: relative;
   height: 10rem;
   width: 20rem;
@@ -7,8 +7,9 @@
   flex-direction: column;
   justify-content: center;
   box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.5);
-  background: linear-gradient(180deg, #696969, lightgrey);
+  /* background: linear-gradient(180deg, #696969, lightgrey); */
   padding: 0.5rem;
+  overflow: hidden;
 }
 
 .weatherImage {

@@ -1,20 +1,14 @@
 .raindrops {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  position: absolute;
-  animation: fall 1s linear;
-  top: 0;
-  left: 0;
+  animation: fall 3s linear infinite;
 }
 
 @keyframes fall {
   0% {
-    transform: translateY(0);
+    transform: translateY(-5rem);
     opacity: 0.5;
   }
   100% {
-    transform: translateY(5rem);
+    transform: translateY(10rem);
     opacity: 0;
   }
 }

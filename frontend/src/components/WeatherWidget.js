@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import WindAttribute from "./WindAttribute";
 import Drops from "./Drops";
 
+const shouldRenderDrops = ["Rain", "Drizzle", "Snow"];
+
 const WeatherWidget = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
@@ -33,7 +35,9 @@ const WeatherWidget = () => {
   }, []);
 
   const renderDrops = () => {
-    return <Drops type="snow" />;
+    if (shouldRenderDrops.includes(weatherData.weather[0].main)) {
+      return <Drops type={weatherData.weather[0].main} />;
+    }
   };
 
   const renderInfo = () => {
@@ -72,6 +76,7 @@ const WeatherWidget = () => {
             flex: 1,
             justifyContent: "center",
             gap: "0.25rem",
+            overflow: "hidden",
           }}
         >
           {renderDrops()}
@@ -103,8 +108,54 @@ const WeatherWidget = () => {
     );
   };
 
-  console.log(weatherData);
+  let gradientStyle = "";
 
-  return <div className={classes.widgetDiv}>{renderInfo()}</div>;
+  switch (weatherData && weatherData.weather[0].main) {
+    case "Clear":
+      gradientStyle = `linear-gradient(200deg, yellow, #87ceeb, #1e90ff)`;
+      break;
+    case "Clouds":
+      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
+      break;
+    case "Rain":
+      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
+      break;
+    case "Drizzle":
+      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
+      break;
+    case "Snow":
+      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
+      break;
+    case "Mist":
+      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
+      break;
+    case "Fog":
+      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
+      break;
+    case "Thunderstorm":
+      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
+      break;
+    case "Tornado":
+      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
+      break;
+    case "Squall":
+      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
+      break;
+    case "Dust":
+      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
+      break;
+    case "Sand":
+      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
+      break;
+    case "Ash":
+      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
+      break;
+  }
+
+  return (
+    <div className={classes.mainDiv} style={{ background: gradientStyle }}>
+      {renderInfo()}
+    </div>
+  );
 };
 export default WeatherWidget;

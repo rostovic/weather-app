@@ -4,6 +4,7 @@ import classes from "./WeatherWidget.module.css";
 import { useState, useEffect } from "react";
 import WindAttribute from "./WindAttribute";
 import Drops from "./Drops";
+import TimeDisplay from "./TimeDisplay";
 
 const shouldRenderDrops = ["Rain", "Drizzle", "Snow"];
 
@@ -67,7 +68,7 @@ const WeatherWidget = () => {
         >
           {weatherData.name}, {weatherData.sys.country}
         </span>
-
+        <TimeDisplay />
         <img src={iconUrl} className={classes.weatherImage} />
         <div
           style={{

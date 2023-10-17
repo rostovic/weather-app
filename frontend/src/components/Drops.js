@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import classes from "./Drops.module.css";
 
 const Drops = ({ type }) => {
@@ -16,16 +15,7 @@ const Drops = ({ type }) => {
   const elements = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   return (
-    <div
-      style={{
-        display: "flex",
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "90%",
-        justifyContent: "space-between",
-      }}
-    >
+    <div className={classes.mainDiv}>
       {elements.map((i) => (
         <div
           key={i}

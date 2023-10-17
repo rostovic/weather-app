@@ -32,7 +32,6 @@ const WeatherWidget = () => {
       const { clientX: cx, clientY: cy } = e;
       let newX = cx - offset.x;
       let newY = cy - offset.y;
-      console.log(newX, newY);
 
       if (newX < 0) {
         newX = 0;
@@ -93,35 +92,13 @@ const WeatherWidget = () => {
     const { speed, deg } = weatherData.wind;
 
     return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          flex: 1,
-        }}
-      >
-        <span
-          style={{
-            fontWeight: "300",
-            fontSize: "2.5rem",
-            color: "white",
-            opacity: 0.75,
-          }}
-        >
+      <div className={classes.widgetDiv}>
+        <span className={classes.cityName}>
           {weatherData.name}, {weatherData.sys.country}
         </span>
         <TimeDisplay />
         <img src={iconUrl} className={classes.weatherImage} />
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            flex: 1,
-            justifyContent: "center",
-            gap: "0.25rem",
-            overflow: "hidden",
-          }}
-        >
+        <div className={classes.innerContent}>
           {renderDrops()}
           <WeatherAttribute
             attributeName="Temperature"

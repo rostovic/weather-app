@@ -9,7 +9,9 @@ const TimeDisplay = () => {
       const minutes = time.getMinutes();
       const seconds = time.getSeconds();
       setTimeString(
-        `${hours}:${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`
+        `${hours < 10 ? `0${hours}` : hours}:${
+          minutes < 10 ? `0${minutes}` : minutes
+        }:${seconds < 10 ? `0${seconds}` : seconds}`
       );
     }, 1000);
 

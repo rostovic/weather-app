@@ -12,13 +12,13 @@ const WeatherAttribute = ({
   const opacity = 0.8;
   switch (iconName) {
     case "humidity":
-      icon = <FaDroplet color="black" size={20} opacity={opacity} />;
+      icon = <FaDroplet color="black" size={18} opacity={opacity} />;
       break;
     case "temperature":
-      icon = <FaTemperatureEmpty color="black" size={20} opacity={opacity} />;
+      icon = <FaTemperatureEmpty color="black" size={18} opacity={opacity} />;
       break;
     case "pressure":
-      icon = <WiBarometer color="black" size={20} opacity={opacity} />;
+      icon = <WiBarometer color="black" size={18} opacity={opacity} />;
       break;
     default:
       icon = null;

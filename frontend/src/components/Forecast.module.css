@@ -38,7 +38,77 @@
 }
 
 .forecastDataDiv {
+  display: flex;
+  justify-content: center;
   width: 100%;
   height: 100%;
-  background: red;
+}
+
+.gridContainer {
+  display: grid;
+  width: 80%;
+  height: 80%;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-gap: 2px;
+}
+
+.gridItem {
+  background-color: #3498db;
+  color: white;
+  padding: 20px;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.gridFilter {
+  display: flex;
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dropdownButton {
+  background-color: white;
+  height: 2rem;
+  width: 8rem;
+}
+
+.dropdownButton:hover {
+  cursor: pointer;
+}
+
+.titleStyle {
+  display: flex;
+  width: 80%;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.listStyle {
+  display: flex;
+  z-index: 999;
+  position: absolute;
+  margin-top: 3rem;
+}
+
+.ulStyle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: white;
+  padding: 1rem;
+  gap: 0.25rem;
+}
+
+.listItem {
+  list-style: none;
+}
+
+.listItem:hover {
+  cursor: pointer;
+  background-color: lightgrey;
 }

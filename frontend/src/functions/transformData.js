@@ -39,6 +39,11 @@ export const transformWeatherData = (weatherData) => {
     groupedData[dtTxt].items.push(item);
   });
 
+  const dataArray = Object.entries(groupedData).map(([date, info]) => ({
+    date,
+    ...info,
+  }));
+
   const data = {
     name: weatherData.city.name,
     country: weatherData.city.country,
@@ -46,7 +51,7 @@ export const transformWeatherData = (weatherData) => {
       latitude: weatherData.city.coord.lat,
       longitude: weatherData.city.coord.lon,
     },
-    weatherForecastList: groupedData,
+    weatherForecastList: dataArray,
   };
   return data;
 };

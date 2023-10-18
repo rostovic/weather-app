@@ -73,7 +73,7 @@ const Forecast = () => {
         </div>
         <div className={classes.gridContainer}>
           <div key={searchedCityForecast.name} className={classes.gridItem}>
-            {searchedCityForecast.name}
+            {searchedCityForecast.name},&nbsp;{searchedCityForecast.country}
           </div>
           <div key="Temperature" className={classes.gridItem}>
             Temperature

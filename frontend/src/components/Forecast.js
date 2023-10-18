@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import classes from "./Forecast.module.css";
 import { getCity5DayForecast, getCityCoords } from "../functions/api";
 import { transformWeatherData } from "../functions/transformData";
@@ -9,6 +9,7 @@ const Forecast = () => {
   const [showData, setShowData] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [currentPeriod, setCurrentPeriod] = useState(null);
+  const [errorText, setErrorText] = useState(null);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -27,15 +28,27 @@ const Forecast = () => {
       return;
     }
     const cityData = await getCityCoords(inputValue);
-    if (cityData.length === 0) {
+    if (!cityData) {
+      setErrorText("No city data. Try again.");
       return;
     }
     const { lat: latitude, lon: longitude } = cityData[0];
     const cityForecast = await getCity5DayForecast(latitude, longitude);
+    if (!cityForecast) {
+      setErrorText("No forecast data. Try again.");
+      return;
+    }
     const data = transformWeatherData(cityForecast);
     setSearchedCityForecast(data);
     setShowData(true);
     setCurrentPeriod("00:00:00");
+  };
+
+  const renderError = () => {
+    if (!errorText) {
+      return;
+    }
+    return <p>{errorText}</p>;
   };
 
   const renderData = () => {
@@ -92,36 +105,34 @@ const Forecast = () => {
               (element) => element.dt_txt.split(" ")[1] === currentPeriod
             );
 
-            return index === -1 ? null : (
-              <>
-                <div key={day.dayName} className={classes.gridItem}>
-                  {day.dayName}
-                </div>
-                <div
-                  key={day.items[index].main.temp}
-                  className={classes.gridItem}
-                >
-                  {(day.items[index].main.temp - 273.15).toFixed(2)}&nbsp;°C
-                </div>
-                <div
-                  key={day.items[index].main.humidity}
-                  className={classes.gridItem}
-                >
-                  {day.items[index].main.humidity}%
-                </div>
-                <div
-                  key={day.items[index].main.pressure}
-                  className={classes.gridItem}
-                >
-                  {day.items[index].main.pressure}&nbsp;hPa
-                </div>
-                <div
-                  key={day.items[index].wind.speed}
-                  className={classes.gridItem}
-                >
-                  {day.items[index].wind.speed}&nbsp;km/h
-                </div>
-              </>
+            const hasData = index !== -1;
+            // let shouldHighlightTemp = false;
+            const temp = hasData
+              ? `${(day.items[index].main.temp - 273.15).toFixed(2)} °C`
+              : "N/A";
+
+            // if (hasData && 21 > 20) {
+            //   shouldHighlightTemp = true;
+            // }
+
+            const humidity = hasData
+              ? `${day.items[index].main.humidity} %`
+              : "N/A";
+
+            const pressure = hasData
+              ? `${day.items[index].main.pressure} hPa`
+              : "N/A";
+
+            const kmh = hasData ? `${day.items[index].wind.speed} km/h` : "N/A";
+
+            return (
+              <Fragment key={day.dayName}>
+                <div className={classes.gridItem}>{day.dayName}</div>
+                <div className={classes.gridItem}>{temp}</div>
+                <div className={classes.gridItem}>{humidity}</div>
+                <div className={classes.gridItem}>{pressure}</div>
+                <div className={classes.gridItem}>{kmh}</div>
+              </Fragment>
             );
           })}
         </div>
@@ -140,6 +151,7 @@ const Forecast = () => {
           id="text-input"
           className={classes.searchBarInputStyle}
           onBlur={handleBlur}
+          onFocus={() => setErrorText(null)}
         />
         <button
           className={classes.searchBarSubmitButton}
@@ -147,6 +159,7 @@ const Forecast = () => {
         >
           SHOW FORECAST
         </button>
+        {renderError()}
       </div>
       <div className={classes.forecastDataDiv}>{renderData()}</div>
     </div>

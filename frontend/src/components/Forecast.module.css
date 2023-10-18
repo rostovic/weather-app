@@ -26,7 +26,7 @@
 .searchBarSubmitButton {
   width: 10rem;
   height: 2rem;
-  background: linear-gradient(45deg, lightblue, aqua, cyan, purple);
+  background: lightblue;
   font-weight: 300;
   border: 0;
   color: white;
@@ -101,16 +101,17 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 1rem;
+  padding: 0;
   margin: 0;
   gap: 0.25rem;
 }
 
 .listItem {
   list-style: none;
+  padding: 1rem;
 }
 
 .listItem:hover {
   cursor: pointer;
-  background-color: lightgrey;
+  background-color: lightblue;
 }

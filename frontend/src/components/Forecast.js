@@ -67,11 +67,11 @@ const Forecast = () => {
     for (const day of searchedCityForecast.weatherForecastList) {
       const dayName = day.dayName;
       if (filter.day === "all") {
-        filteredDays.push(day);
+        filteredDays.push({ ...day });
         continue;
       }
       if (filter.day === dayName) {
-        filteredDays.push(day);
+        filteredDays.push({ ...day });
       }
     }
 
@@ -87,6 +87,8 @@ const Forecast = () => {
         }
       }
     }
+
+    // console.log(filteredDays);
     return filteredDays;
   };
 
@@ -96,8 +98,7 @@ const Forecast = () => {
     }
 
     const filteredData = filterData();
-    console.log(filter);
-    console.log(filteredData);
+    // console.log(searchedCityForecast.weatherForecastList);
 
     return (
       <div className={classes.gridFilter}>

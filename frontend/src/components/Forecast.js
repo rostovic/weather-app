@@ -7,16 +7,25 @@ const Forecast = () => {
   const [inputValue, setInputValue] = useState("");
   const [searchedCityForecast, setSearchedCityForecast] = useState(null);
   const [showData, setShowData] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentPeriod, setCurrentPeriod] = useState(null);
+  const [isOpenPeriod, setIsOpenPeriod] = useState(false);
+  const [isOpenDay, setIsOpenDay] = useState(false);
+  const [filter, setFilter] = useState({ day: "all", period: "all" });
   const [errorText, setErrorText] = useState(null);
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+  const toggleDropdownPeriod = () => {
+    setIsOpenPeriod(!isOpenPeriod);
   };
 
-  const closeDropdown = () => {
-    setIsOpen(false);
+  const closeDropdownPeriod = () => {
+    setIsOpenPeriod(false);
+  };
+
+  const toggleDropdownDay = () => {
+    setIsOpenDay(!isOpenDay);
+  };
+
+  const closeDropdownDay = () => {
+    setIsOpenDay(false);
   };
 
   const handleBlur = (event) => {
@@ -41,7 +50,6 @@ const Forecast = () => {
     const data = transformWeatherData(cityForecast);
     setSearchedCityForecast(data);
     setShowData(true);
-    setCurrentPeriod("00:00:00");
   };
 
   const renderError = () => {
@@ -51,42 +59,156 @@ const Forecast = () => {
     return <p>{errorText}</p>;
   };
 
+  const filterData = () => {
+    if (!searchedCityForecast) {
+      return;
+    }
+    let filteredDays = [];
+    for (const day of searchedCityForecast.weatherForecastList) {
+      const dayName = day.dayName;
+      if (filter.day === "all") {
+        filteredDays.push(day);
+        continue;
+      }
+      if (filter.day === dayName) {
+        filteredDays.push(day);
+      }
+    }
+
+    if (filter.period !== "all") {
+      for (const day of filteredDays) {
+        let filteredPeriod = day.items.find(
+          (period) => period.dt_txt.split(" ")[1] === filter.period
+        );
+        if (filteredPeriod) {
+          day.items = [filteredPeriod];
+        } else {
+          day.items = [];
+        }
+      }
+    }
+    return filteredDays;
+  };
+
   const renderData = () => {
     if (!showData) {
       return null;
     }
 
+    const filteredData = filterData();
+    console.log(filter);
+    console.log(filteredData);
+
     return (
       <div className={classes.gridFilter}>
-        <div className={classes.titleStyle}>
-          <label>Period</label>
-          <button onClick={toggleDropdown} className={classes.dropdownButton}>
-            {currentPeriod}
-          </button>
-          {isOpen && (
-            <div className={classes.listStyle} onClick={closeDropdown}>
-              <ul className={classes.ulStyle}>
-                {searchedCityForecast.weatherForecastList[0].items.map(
-                  (element) => {
-                    return (
-                      <li
-                        className={classes.listItem}
-                        onClick={() => {
-                          setCurrentPeriod(element.dt_txt.split(" ")[1]);
-                        }}
-                      >
-                        {element.dt_txt.split(" ")[1]}
-                      </li>
-                    );
-                  }
-                )}
-              </ul>
+        <div style={{ display: "flex", width: "80%" }}>
+          <div className={classes.titleStyle}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "0.25rem",
+              }}
+            >
+              <label>Period</label>
+              <button
+                onClick={toggleDropdownPeriod}
+                className={classes.dropdownButton}
+              >
+                {filter.period}
+              </button>
+
+              {isOpenPeriod && (
+                <div className={classes.listStyle}>
+                  <ul className={classes.ulStyle}>
+                    <li
+                      className={classes.listItem}
+                      onClick={() => {
+                        closeDropdownPeriod();
+                        setFilter({ day: filter.day, period: "all" });
+                      }}
+                    >
+                      All
+                    </li>
+                    {searchedCityForecast.weatherForecastList[0].items.map(
+                      (element) => {
+                        const data = element.dt_txt.split(" ")[1];
+                        return (
+                          <li
+                            key={data}
+                            className={classes.listItem}
+                            onClick={() => {
+                              closeDropdownPeriod();
+                              setFilter({
+                                day: filter.day,
+                                period: data,
+                              });
+                            }}
+                          >
+                            {data}
+                          </li>
+                        );
+                      }
+                    )}
+                  </ul>
+                </div>
+              )}
             </div>
-          )}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "0.25rem",
+              }}
+            >
+              <label>Day</label>
+              <button
+                className={classes.dropdownButton}
+                onClick={toggleDropdownDay}
+              >
+                {filter.day}
+              </button>
+              {isOpenDay && (
+                <div className={classes.listStyle}>
+                  <ul className={classes.ulStyle}>
+                    <li
+                      className={classes.listItem}
+                      onClick={() => {
+                        closeDropdownDay();
+                        setFilter({ day: "all", period: filter.period });
+                      }}
+                    >
+                      All
+                    </li>
+                    {searchedCityForecast.weatherForecastList.map((day) => {
+                      const dayName = day.dayName;
+                      return (
+                        <li
+                          key={dayName}
+                          className={classes.listItem}
+                          onClick={() => {
+                            closeDropdownDay();
+                            setFilter({ day: dayName, period: filter.period });
+                          }}
+                        >
+                          {dayName}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
         <div className={classes.gridContainer}>
           <div key={searchedCityForecast.name} className={classes.gridItem}>
             {searchedCityForecast.name},&nbsp;{searchedCityForecast.country}
+          </div>
+          <div key="Time period" className={classes.gridItem}>
+            Time period
           </div>
           <div key="Temperature" className={classes.gridItem}>
             Temperature
@@ -100,40 +222,29 @@ const Forecast = () => {
           <div key="Wind speed" className={classes.gridItem}>
             Wind speed
           </div>
-          {searchedCityForecast.weatherForecastList.map((day) => {
-            const index = day.items.findIndex(
-              (element) => element.dt_txt.split(" ")[1] === currentPeriod
-            );
+          {filteredData.map((day) => {
+            return day.items.map((period) => {
+              const temp = `${(period.main.temp - 273.15).toFixed(2)} °C`;
 
-            const hasData = index !== -1;
-            // let shouldHighlightTemp = false;
-            const temp = hasData
-              ? `${(day.items[index].main.temp - 273.15).toFixed(2)} °C`
-              : "N/A";
+              const humidity = `${period.main.humidity} %`;
 
-            // if (hasData && 21 > 20) {
-            //   shouldHighlightTemp = true;
-            // }
+              const pressure = `${period.main.pressure} hPa`;
 
-            const humidity = hasData
-              ? `${day.items[index].main.humidity} %`
-              : "N/A";
+              const kmh = `${period.wind.speed} km/h`;
 
-            const pressure = hasData
-              ? `${day.items[index].main.pressure} hPa`
-              : "N/A";
+              const dayTime = period.dt_txt.split(" ")[1];
 
-            const kmh = hasData ? `${day.items[index].wind.speed} km/h` : "N/A";
-
-            return (
-              <Fragment key={day.dayName}>
-                <div className={classes.gridItem}>{day.dayName}</div>
-                <div className={classes.gridItem}>{temp}</div>
-                <div className={classes.gridItem}>{humidity}</div>
-                <div className={classes.gridItem}>{pressure}</div>
-                <div className={classes.gridItem}>{kmh}</div>
-              </Fragment>
-            );
+              return (
+                <Fragment key={period.dt}>
+                  <div className={classes.gridItem}>{day.dayName}</div>
+                  <div className={classes.gridItem}>{dayTime}</div>
+                  <div className={classes.gridItem}>{temp}</div>
+                  <div className={classes.gridItem}>{humidity}</div>
+                  <div className={classes.gridItem}>{pressure}</div>
+                  <div className={classes.gridItem}>{kmh}</div>
+                </Fragment>
+              );
+            });
           })}
         </div>
       </div>

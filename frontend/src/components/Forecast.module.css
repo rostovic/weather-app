@@ -48,9 +48,9 @@
   display: grid;
   width: 80%;
   height: 80%;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   grid-gap: 2px;
+  overflow: auto;
 }
 
 .gridItem {
@@ -83,7 +83,6 @@
 .titleStyle {
   display: flex;
   width: 80%;
-  flex-direction: column;
   gap: 0.25rem;
 }
 
@@ -92,7 +91,7 @@
   z-index: 999;
   position: absolute;
   background-color: white;
-  margin-top: 3.4rem;
+  margin-top: 3.5rem;
   border: 2px solid black;
 }
 

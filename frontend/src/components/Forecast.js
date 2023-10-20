@@ -85,7 +85,7 @@ const Forecast = () => {
       return;
     }
     const cityData = await getCityCoords(inputValue);
-    if (!cityData) {
+    if (!cityData || cityData.length === 0) {
       setErrorText("No city data. Try again.");
       return;
     }

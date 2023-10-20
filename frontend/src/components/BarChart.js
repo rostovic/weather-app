@@ -82,7 +82,7 @@ const BarChart = ({ filteredData, filterState }) => {
   return (
     <>
       {filterState.prop !== "-" ? (
-        <div style={{ width: "50rem", height: "25rem", overflowX: "scroll" }}>
+        <div style={{ width: "50%" }}>
           <Line options={options} data={data} />
         </div>
       ) : null}

@@ -4,7 +4,8 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 40rem;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .searchBarDiv {
@@ -41,7 +42,7 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 100%;
+  height: 28rem;
 }
 
 .gridContainer {
@@ -113,4 +114,11 @@
 .listItem:hover {
   cursor: pointer;
   background-color: lightblue;
+}
+
+.singleFilterDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
 }

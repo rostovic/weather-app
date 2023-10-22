@@ -30,6 +30,7 @@ const BarChart = ({ filteredData, filterState }) => {
       },
     },
   };
+
   let labels = [];
   let valuesTemp = [];
   let valuesHumidity = [];

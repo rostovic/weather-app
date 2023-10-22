@@ -36,34 +36,29 @@ const BarChart = ({ filteredData, filterState }) => {
   let valuesPressure = [];
   let valuesWind = [];
 
-  filteredData.map((day) =>
-    day.items.map((period) => {
+  filteredData.forEach((day) =>
+    day.items.forEach((period) => {
       labels.push(`${day.dayName} ${period.dt_txt.split(" ")[1]}`);
-      if (filterState.prop === "-") {
+      if (filterState.weatherProp === "All") {
         valuesTemp.push((period.main.temp - 273.15).toFixed(2));
         valuesHumidity.push(period.main.humidity);
         valuesPressure.push(period.main.pressure);
         valuesWind.push(period.wind.speed);
       }
-      if (filterState.prop === "Temperature") {
+      if (filterState.weatherProp === "Temperature") {
         valuesTemp.push((period.main.temp - 273.15).toFixed(2));
       }
-      if (filterState.prop === "Humidity") {
+      if (filterState.weatherProp === "Humidity") {
         valuesHumidity.push(period.main.humidity);
       }
-      if (filterState.prop === "Pressure") {
+      if (filterState.weatherProp === "Pressure") {
         valuesPressure.push(period.main.pressure);
       }
-      if (filterState.prop === "Wind speed") {
+      if (filterState.weatherProp === "Wind") {
         valuesWind.push(period.wind.speed);
       }
     })
   );
-
-  valuesTemp = [...valuesTemp];
-  valuesHumidity = [...valuesHumidity];
-  valuesPressure = [...valuesPressure];
-  valuesWind = [...valuesWind];
 
   let data = {
     labels,
@@ -87,7 +82,7 @@ const BarChart = ({ filteredData, filterState }) => {
         backgroundColor: "yellow",
       },
       {
-        label: "Wind speed",
+        label: "Wind",
         data: valuesWind,
         borderColor: "green",
         backgroundColor: "green",
@@ -95,9 +90,9 @@ const BarChart = ({ filteredData, filterState }) => {
     ],
   };
 
-  if (filterState.prop !== "-") {
+  if (filterState.weatherProp !== "All") {
     const dataset = data.datasets.find(
-      (element) => element.label === filterState.prop
+      (element) => element.label === filterState.weatherProp
     );
 
     data = {

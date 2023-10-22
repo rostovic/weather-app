@@ -1,8 +1,14 @@
-import MainLayout from "./components/MainLayout";
 import "./App.css";
+import Forecast from "./components/Forecast";
+import WeatherWidget from "./components/WeatherWidget";
 
 const App = () => {
-  return <MainLayout />;
+  return (
+    <div className="mainLayoutDiv">
+      <WeatherWidget />
+      <Forecast />
+    </div>
+  );
 };
 
 export default App;

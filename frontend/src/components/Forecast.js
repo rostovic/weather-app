@@ -12,9 +12,9 @@ const Forecast = () => {
   const [isOpenDay, setIsOpenDay] = useState(false);
   const [isOpenProperty, setIsOpenProperty] = useState(false);
   const [filter, setFilter] = useState({
-    day: "all",
-    period: "all",
-    prop: "-",
+    day: "All",
+    period: "All",
+    weatherProp: "All",
   });
   const [errorText, setErrorText] = useState(null);
 
@@ -25,7 +25,7 @@ const Forecast = () => {
     let filteredDays = [];
     for (const day of searchedCityForecast.weatherForecastList) {
       const dayName = day.dayName;
-      if (filter.day === "all") {
+      if (filter.day === "All") {
         filteredDays.push({ ...day });
         continue;
       }
@@ -34,7 +34,7 @@ const Forecast = () => {
       }
     }
 
-    if (filter.period !== "all") {
+    if (filter.period !== "All") {
       for (const day of filteredDays) {
         let filteredPeriod = day.items.find(
           (period) => period.dt_txt.split(" ")[1] === filter.period
@@ -112,12 +112,27 @@ const Forecast = () => {
       return null;
     }
 
+    const dropDownItems = [
+      "All",
+      "Temperature",
+      "Humidity",
+      "Pressure",
+      "Wind",
+    ];
+
+    let tableProps = [searchedCityForecast.name, "Time period"];
+    if (filter.weatherProp === "All") {
+      tableProps.push(...dropDownItems.slice(1));
+    } else {
+      tableProps.push(filter.weatherProp);
+    }
+
     return (
       <div
         className={classes.gridFilter}
         style={{
           height:
-            filter.day !== "all" && filter.period !== "all" ? "14rem" : null,
+            filter.day !== "All" && filter.period !== "All" ? "14rem" : null,
         }}
       >
         <div style={{ display: "flex", width: "80%" }}>
@@ -140,12 +155,12 @@ const Forecast = () => {
                         closeDropdownPeriod();
                         setFilter({
                           day: filter.day,
-                          period: "all",
-                          prop: filter.prop,
+                          period: "All",
+                          weatherProp: filter.weatherProp,
                         });
                       }}
                     >
-                      all
+                      All
                     </li>
                     {searchedCityForecast.weatherForecastList[0].items.map(
                       (element) => {
@@ -159,7 +174,7 @@ const Forecast = () => {
                               setFilter({
                                 day: filter.day,
                                 period: data,
-                                prop: filter.prop,
+                                weatherProp: filter.weatherProp,
                               });
                             }}
                           >
@@ -188,13 +203,13 @@ const Forecast = () => {
                       onClick={() => {
                         closeDropdownDay();
                         setFilter({
-                          day: "all",
+                          day: "All",
                           period: filter.period,
-                          prop: filter.prop,
+                          weatherProp: filter.weatherProp,
                         });
                       }}
                     >
-                      all
+                      All
                     </li>
                     {searchedCityForecast.weatherForecastList.map((day) => {
                       const dayName = day.dayName;
@@ -207,7 +222,7 @@ const Forecast = () => {
                             setFilter({
                               day: dayName,
                               period: filter.period,
-                              prop: filter.prop,
+                              weatherProp: filter.weatherProp,
                             });
                           }}
                         >
@@ -225,81 +240,27 @@ const Forecast = () => {
                 className={classes.dropdownButton}
                 onClick={toggleDropdownProperty}
               >
-                {filter.prop}
+                {filter.weatherProp}
               </button>
               {isOpenProperty && (
                 <div className={classes.listStyle}>
                   <ul className={classes.ulStyle}>
-                    <li
-                      className={classes.listItem}
-                      onClick={() => {
-                        closeDropdownProperty();
-                        setFilter({
-                          day: filter.day,
-                          period: filter.period,
-                          prop: "-",
-                        });
-                      }}
-                    >
-                      -
-                    </li>
-
-                    <li
-                      key="Temperature"
-                      className={classes.listItem}
-                      onClick={() => {
-                        closeDropdownProperty();
-                        setFilter({
-                          day: filter.day,
-                          period: filter.period,
-                          prop: "Temperature",
-                        });
-                      }}
-                    >
-                      Temperature
-                    </li>
-                    <li
-                      key="Humidity"
-                      className={classes.listItem}
-                      onClick={() => {
-                        closeDropdownProperty();
-                        setFilter({
-                          day: filter.day,
-                          period: filter.period,
-                          prop: "Humidity",
-                        });
-                      }}
-                    >
-                      Humidity
-                    </li>
-                    <li
-                      key="Pressure"
-                      className={classes.listItem}
-                      onClick={() => {
-                        closeDropdownProperty();
-                        setFilter({
-                          day: filter.day,
-                          period: filter.period,
-                          prop: "Pressure",
-                        });
-                      }}
-                    >
-                      Pressure
-                    </li>
-                    <li
-                      key="Wind speed"
-                      className={classes.listItem}
-                      onClick={() => {
-                        closeDropdownProperty();
-                        setFilter({
-                          day: filter.day,
-                          period: filter.period,
-                          prop: "Wind speed",
-                        });
-                      }}
-                    >
-                      Wind speed
-                    </li>
+                    {dropDownItems.map((property) => (
+                      <li
+                        key={property}
+                        className={classes.listItem}
+                        onClick={() => {
+                          closeDropdownProperty();
+                          setFilter({
+                            day: filter.day,
+                            period: filter.period,
+                            weatherProp: property,
+                          });
+                        }}
+                      >
+                        {property}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               )}
@@ -310,61 +271,61 @@ const Forecast = () => {
           className={classes.gridContainer}
           style={{
             gridTemplateColumns:
-              filter.prop === "-" ? "repeat(6, 1fr)" : "repeat(3, 1fr)",
+              filter.weatherProp === "All"
+                ? "repeat(6, 1fr)"
+                : "repeat(3, 1fr)",
           }}
         >
-          <div key={searchedCityForecast.name} className={classes.gridItem}>
-            {searchedCityForecast.name},&nbsp;{searchedCityForecast.country}
-          </div>
-          <div key="Time period" className={classes.gridItem}>
-            Time period
-          </div>
-
-          {(filter.prop === "Temperature" || filter.prop === "-") && (
-            <div key="Temperature" className={classes.gridItem}>
-              Temperature
-            </div>
-          )}
-          {(filter.prop === "Humidity" || filter.prop === "-") && (
-            <div key="Humidity" className={classes.gridItem}>
-              Humidity
-            </div>
-          )}
-          {(filter.prop === "Pressure" || filter.prop === "-") && (
-            <div key="Pressure" className={classes.gridItem}>
-              Pressure
-            </div>
-          )}
-          {(filter.prop === "Wind speed" || filter.prop === "-") && (
-            <div key="Wind speed" className={classes.gridItem}>
-              Wind speed
-            </div>
-          )}
+          {tableProps.map((tableProp, i) => {
+            let label = tableProp;
+            if (i === 0) {
+              label += `, ${searchedCityForecast.country}`;
+            }
+            return (
+              <div key={tableProp} className={classes.gridItem}>
+                {label}
+              </div>
+            );
+          })}
 
           {filteredData.map((day) => {
             return day.items.map((period) => {
               const dayTime = period.dt_txt.split(" ")[1];
-              const temp = `${(period.main.temp - 273.15).toFixed(2)} °C`;
-              const humidity = `${period.main.humidity} %`;
-              const pressure = `${period.main.pressure} hPa`;
-              const kmh = `${period.wind.speed} km/h`;
+              const Temperature = `${(period.main.temp - 273.15).toFixed(
+                2
+              )} °C`;
+              const Humidity = `${period.main.humidity} %`;
+              const Pressure = `${period.main.pressure} hPa`;
+              const Wind = `${period.wind.speed} km/h`;
+              const elementsObject = {
+                dayName: day.dayName,
+                dayTime: dayTime,
+                Temperature,
+                Humidity,
+                Pressure,
+                Wind,
+              };
+
+              const elements = [day.dayName, dayTime];
+
+              if (filter.weatherProp === "All") {
+                elements.push(
+                  elementsObject.Temperature,
+                  elementsObject.Humidity,
+                  elementsObject.Pressure,
+                  elementsObject.Wind
+                );
+              } else {
+                elements.push(elementsObject[filter.weatherProp]);
+              }
 
               return (
                 <Fragment key={period.dt}>
-                  <div className={classes.gridItem}>{day.dayName}</div>
-                  <div className={classes.gridItem}>{dayTime}</div>
-                  {(filter.prop === "Temperature" || filter.prop === "-") && (
-                    <div className={classes.gridItem}>{temp}</div>
-                  )}
-                  {(filter.prop === "Humidity" || filter.prop === "-") && (
-                    <div className={classes.gridItem}>{humidity}</div>
-                  )}
-                  {(filter.prop === "Pressure" || filter.prop === "-") && (
-                    <div className={classes.gridItem}>{pressure}</div>
-                  )}
-                  {(filter.prop === "Wind speed" || filter.prop === "-") && (
-                    <div className={classes.gridItem}>{kmh}</div>
-                  )}
+                  {elements.map((property) => (
+                    <div key={property} className={classes.gridItem}>
+                      {property}
+                    </div>
+                  ))}
                 </Fragment>
               );
             });

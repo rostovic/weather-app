@@ -134,40 +134,8 @@ const WeatherWidget = () => {
     case "Clear":
       gradientStyle = `linear-gradient(200deg, yellow, #87ceeb, #1e90ff)`;
       break;
-    case "Clouds":
-      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
-      break;
-    case "Rain":
-      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
-      break;
-    case "Drizzle":
-      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
-      break;
-    case "Snow":
-      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
-      break;
-    case "Mist":
-      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
-      break;
-    case "Fog":
-      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
-      break;
-    case "Thunderstorm":
-      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
-      break;
-    case "Tornado":
-      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
-      break;
-    case "Squall":
-      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
-      break;
-    case "Dust":
-      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
-      break;
-    case "Sand":
-      gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
-      break;
-    case "Ash":
+    // add more cases if needed
+    default:
       gradientStyle = `linear-gradient(180deg, #696969, lightgrey)`;
       break;
   }
